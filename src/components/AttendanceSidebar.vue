@@ -3,6 +3,8 @@ import { RouterLink } from 'vue-router'
 import FormLabel from './form/FormLabel.vue'
 import DateInput from './form/DateInput.vue'
 import SelectInput from './form/SelectInput.vue'
+import MultiSelectInput from './form/MultiSelectInput.vue'
+import FilterButton from './FilterButton.vue'
 
 const attendanceLinks = [
   {
@@ -19,8 +21,37 @@ const attendanceLinks = [
 
 const companyOptions = [
   {
+    value: 'all',
+    label: 'All'
+  },
+  {
     value: 'sprout',
     label: 'Sprout Solutions'
+  }
+]
+
+const departmentOptions = [
+  {
+    value: 'all',
+    label: 'All'
+  }
+]
+
+const locationOptions = [
+  {
+    value: 'all',
+    label: 'All'
+  }
+]
+
+const employeeOptions = [
+  {
+    value: 'all',
+    label: 'All'
+  },
+  {
+    value: 'john-smith',
+    label: 'John Smith'
   }
 ]
 </script>
@@ -46,7 +77,14 @@ const companyOptions = [
       <DateInput>Date From</DateInput>
       <DateInput>Date To</DateInput>
       <FormLabel>Filters</FormLabel>
-      <SelectInput :options="companyOptions">Company</SelectInput>
+      <MultiSelectInput :options="companyOptions" :multiple="false">Company</MultiSelectInput>
+      <MultiSelectInput :options="departmentOptions" :multiple="false">Department</MultiSelectInput>
+      <MultiSelectInput :options="locationOptions" :multiple="false">Location</MultiSelectInput>
+      <MultiSelectInput :options="employeeOptions">Employees</MultiSelectInput>
+    </div>
+    <div class="sidebar__actions">
+      <FilterButton :icon="['fas', 'search']">Search</FilterButton>
+      <FilterButton :icon="['fas', 'download']" bordered disabled>Export</FilterButton>
     </div>
   </div>
 </template>
@@ -67,6 +105,15 @@ const companyOptions = [
 }
 
 .sidebar__filters {
+  padding: 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-bottom: 1px solid var(--divider-light-1);
+}
+
+.sidebar__actions {
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
 }
 
