@@ -1,5 +1,9 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink } from 'vue-router'
+import FormLabel from './form/FormLabel.vue'
+import DateInput from './form/DateInput.vue'
+import SelectInput from './form/SelectInput.vue'
+
 const attendanceLinks = [
   {
     label: 'Attendance Logs',
@@ -10,6 +14,13 @@ const attendanceLinks = [
     label: 'Exported Files',
     to: '/exported',
     icon: ['fas', 'download']
+  }
+]
+
+const companyOptions = [
+  {
+    value: 'sprout',
+    label: 'Sprout Solutions'
   }
 ]
 </script>
@@ -30,6 +41,13 @@ const attendanceLinks = [
         </RouterLink>
       </nav>
     </div>
+    <div class="sidebar__filters">
+      <FormLabel>Date Range</FormLabel>
+      <DateInput>Date From</DateInput>
+      <DateInput>Date To</DateInput>
+      <FormLabel>Filters</FormLabel>
+      <SelectInput :options="companyOptions">Company</SelectInput>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -46,6 +64,10 @@ const attendanceLinks = [
 .sidebar__nav {
   padding: 1.5rem;
   border-bottom: 1px solid var(--divider-light-2);
+}
+
+.sidebar__filters {
+  padding: 1.5rem;
 }
 
 .sidebar__text {
