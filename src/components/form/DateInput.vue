@@ -1,8 +1,10 @@
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
 const props = defineProps(['onChange'])
 const { onChange } = props
+
+const value = ref()
 
 const handleDateChange = (event) => {
   console.log('Date changed:', event.target.value)
@@ -12,7 +14,7 @@ const handleDateChange = (event) => {
 <template>
   <div class="date__input">
     <label><slot></slot></label>
-    <input type="date" @change="handleDateChange" />
+    <input type="date" @change="handleDateChange" v-model="ref" />
   </div>
 </template>
 <style scoped>

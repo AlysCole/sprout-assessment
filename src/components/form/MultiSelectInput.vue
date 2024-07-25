@@ -1,21 +1,31 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
 const value = ref('')
+const props = defineProps(['options', 'placeholder'])
+const { options, placeholder } = props
 </script>
 
 <template>
-  <multiselect :multiple="true" v-model="value" v-bind="$props" class="multi__select" label="label">
+  <multiselect
+    :multiple="true"
+    :disabled="!options?.length"
+    v-model="value"
+    v-bind="$props"
+    :placeholder="!options?.length ? `No ${placeholder}` : `Select ${placeholder}`"
+    class="multi__select"
+    label="label"
+  >
     <template v-slot:caret>
       <div class="multiselect__chevron">
         <font-awesome-icon :icon="['fas', 'chevron-down']" />
       </div>
     </template>
     <template #selection="{ values, search, isOpen }">
-      <label><slot></slot></label>
+      <label v-if="values.length || value"><slot></slot></label>
       <span class="multiselect__single" v-if="values.length" v-show="!isOpen"
-        >{{ values.length }} option{{ values?.length > 1 ? 's' : '' }} selected</span
+        >{{ values.length }} Selected</span
       >
     </template>
   </multiselect>
@@ -42,6 +52,15 @@ const value = ref('')
   margin-top: 1.2rem;
   min-height: unset;
   color: var(--text-light-1);
+}
+
+.multiselect--disabled {
+  background: unset;
+  opacity: 1;
+}
+
+.multiselect--disabled .multiselect__tags {
+  background: #f0f2f2;
 }
 
 .multiselect__placeholder {

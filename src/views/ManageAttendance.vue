@@ -115,9 +115,9 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
             </tr>
           </tbody>
         </table>
-        <div class="table-pager" v-if="data?.length > 0">
+        <div class="table-pager">
           <div class="items-per-page">
-            Items per page {{ maxItems }}
+            Items per page
             <SelectInput
               :list="Array.from({ length: 10 }, (_, i) => i + 1)"
               :small="true"
@@ -125,13 +125,14 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
               v-model.number="maxItems"
             />
           </div>
-          <div class="pager-nav">
+          <div :class="`pager-nav ${!data?.length ? 'disabled' : ''}`">
             <font-awesome-icon :icon="['fas', 'backward']" />
             <font-awesome-icon :icon="['fas', 'play']" style="transform: scaleX(-1)" />
             <div class="pager-nav__input">
               Page
               <input
                 value="1"
+                :disabled="!data?.length"
                 type="number"
                 v-model.number="page"
                 :min="1"
@@ -143,7 +144,7 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
             <font-awesome-icon :icon="['fas', 'forward']" />
           </div>
           <div class="items-showing">
-            Showing {{ 1 + (page - 1) * maxItems }} -
+            Showing {{ data?.length ? `${1 + (page - 1) * maxItems} - ` : '' }}
             {{ (page - 1) * maxItems + filteredData?.length }} of {{ data?.length }}
           </div>
         </div>
@@ -152,7 +153,7 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
   </main>
 </template>
 
-<style scoped>
+<style>
 .attendance-view {
   display: flex;
   flex-direction: column;
@@ -160,29 +161,31 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
   padding: 1.5rem;
 }
 
-h3 {
-  margin-bottom: 1rem;
+.attendance-view h3 {
+  margin-bottom: 2rem;
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--text-light-1);
 }
 
-h3 svg {
+.attendance-view svg {
   color: var(--green);
   margin-right: 0.5rem;
 }
 
-.table-view {
+.attendance-view .table-view {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   border: 1px solid var(--divider-light-1);
   border-radius: 5px;
 }
 
-.table-view.empty {
-  height: 100%;
+.attendance-view .table-view.empty {
+  flex: 1;
 }
 
-.empty-table {
+.attendance-view .empty-table {
   height: 100%;
   width: 100%;
   display: flex;
@@ -191,41 +194,41 @@ h3 svg {
   justify-content: center;
 }
 
-.empty-table img {
+.attendance-view .empty-table img {
   max-height: 100px;
   margin-bottom: 1.5rem;
 }
 
-table {
+.attendance-view .table-view table {
   width: 100%;
   border-collapse: collapse;
 }
 
-table thead tr {
+.attendance-view .table-view table thead tr {
   border-bottom: 1px solid var(--divider-light-1);
 }
 
-table thead th {
+.attendance-view .table-view table thead th {
   text-align: left;
   padding: 0.8rem;
   text-transform: uppercase;
   font-size: 0.8rem;
 }
 
-table tbody td {
+.attendance-view .table-view table tbody td {
   padding: 0.4rem 0.8rem;
   max-width: 100px;
 }
 
-table tbody tr {
+.attendance-view .table-view table tbody tr {
   border-bottom: 1px solid var(--divider-light-2);
 }
 
-table tbody tr:last-of-type {
+.attendance-view .table-view table tbody tr:last-of-type {
   border-bottom: none;
 }
 
-.edit-button {
+.attendance-view .table-view .edit-button {
   outline: none;
   background: none;
   border: none;
@@ -234,39 +237,39 @@ table tbody tr:last-of-type {
   color: var(--green);
 }
 
-.cell {
+.attendance-view .table-view .cell {
   width: 100%;
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.cell-text {
+.attendance-view .table-view .cell-text {
   width: 100%;
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.cell-subtext {
+.attendance-view .table-view .cell-subtext {
   font-size: 0.8rem;
   color: var(--subtext);
 }
 
-.in-status {
+.attendance-view .table-view .in-status {
   text-transform: uppercase;
   font-weight: 600;
 }
 
-.in-status[data-content='in'] {
+.attendance-view .table-view .in-status[data-content='in'] {
   color: var(--blue);
 }
 
-.in-status[data-content='out'] {
+.attendance-view .table-view .in-status[data-content='out'] {
   color: var(--orange);
 }
 
-.log-detail__badge {
+.attendance-view .table-view .log-detail__badge {
   font-weight: 600;
   text-transform: uppercase;
   padding: 3px 5px;
@@ -275,7 +278,7 @@ table tbody tr:last-of-type {
   background: var(--badge-bg);
 }
 
-.table-pager {
+.attendance-view .table-view .table-pager {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -284,21 +287,23 @@ table tbody tr:last-of-type {
   padding: 1rem;
 }
 
-.items-per-page {
+.attendance-view .table-view .items-per-page {
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
 }
 
-.pager-nav {
+.attendance-view .table-view .pager-nav {
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
 }
 
-.pager-nav__input input {
+.attendance-view .table-view .pager-nav__input input {
   margin: 0;
   border: 1px solid var(--divider-light-1);
   border-radius: 5px;
@@ -309,8 +314,16 @@ table tbody tr:last-of-type {
   font-size: 0.9rem;
 }
 
-.pager-nav svg {
+.attendance-view .table-view .pager-nav svg {
   font-size: 0.9rem;
   color: var(--green);
+}
+
+.attendance-view .table-view .pager-nav.disabled svg {
+  color: var(--divider-light-1);
+}
+
+.attendance-view .items-showing {
+  flex: 1;
 }
 </style>
