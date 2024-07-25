@@ -325,5 +325,6 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
 
 .attendance-view .items-showing {
   flex: 1;
+  text-align: right;
 }
 </style>
