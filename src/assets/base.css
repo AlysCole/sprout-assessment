@@ -10,6 +10,10 @@
   --green: #17ad49;
   --green-light: #e6ffee;
 
+  --blue: #0f6de9;
+
+  --orange: #e47200;
+
   --divider-light-1: rgba(60, 60, 60, 0.29);
   --divider-light-2: rgba(60, 60, 60, 0.12);
   --divider-dark-1: rgba(84, 84, 84, 0.65);
@@ -19,6 +23,9 @@
   --text-light-2: rgba(60, 60, 60, 0.66);
   --text-dark-1: var(--white);
   --text-dark-2: rgba(235, 235, 235, 0.64);
+
+  --subtext: #788e86;
+  --badge-bg: #c3cdc9;
 }
 
 /* semantic color variables for this project */
@@ -64,7 +71,9 @@
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   color: var(--color-text);
   background: var(--color-background);
   transition:
