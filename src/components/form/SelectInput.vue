@@ -1,14 +1,25 @@
 <script setup>
 import { defineProps } from 'vue'
 
-const props = defineProps(['options'])
-const { options } = props
+const props = defineProps(['list', 'small', 'value'])
+
+const model = defineModel()
+
+function update(event) {
+  model.value = event.target.value
+}
 </script>
 <template>
-  <div class="select__input">
+  <div :class="`select__input ${$props.small ? 'small' : ''}`">
     <label><slot></slot></label>
-    <select>
-      <option v-for="option in options" :key="option.value">{{ option.label }}</option>
+    <select v-bind="$props" @change="update">
+      <option
+        v-for="option in $props.list"
+        :key="option?.value || option"
+        :selected="option?.value === $props.value || option === $props.value"
+      >
+        {{ option?.label || option }}
+      </option>
     </select>
     <font-awesome-icon :icon="['fas', 'chevron-down']" />
   </div>
@@ -22,6 +33,12 @@ const { options } = props
   border: 1px solid var(--divider-light-1);
   border-radius: 5px;
   width: 100%;
+}
+
+.select__input.small {
+  margin: 0;
+  width: 60px;
+  max-width: 150px;
 }
 
 .select__input label {
@@ -56,5 +73,14 @@ const { options } = props
   font-size: 1rem;
   color: var(--text-light-1);
   font-family: var(--font-family);
+}
+
+.select__input.small select {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.select__input.small svg {
+  right: 0.4rem;
 }
 </style>

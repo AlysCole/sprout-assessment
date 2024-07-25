@@ -18,12 +18,25 @@ import {
   faBusinessTime,
   faDownload,
   faChevronDown,
-  faSearch
+  faSearch,
+  faPlay,
+  faBackward,
+  faForward
 } from '@fortawesome/free-solid-svg-icons'
 import { faCalendar, faEdit } from '@fortawesome/free-regular-svg-icons'
 
 /* add icons to the library */
-library.add(faBusinessTime, faDownload, faChevronDown, faCalendar, faSearch, faEdit)
+library.add(
+  faBusinessTime,
+  faDownload,
+  faChevronDown,
+  faCalendar,
+  faSearch,
+  faEdit,
+  faPlay,
+  faBackward,
+  faForward
+)
 
 const app = createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)

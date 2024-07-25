@@ -1,12 +1,16 @@
 <script setup>
 import { ref, watch } from 'vue'
-import NoDataImg from '../assets/no-data.svg'
-import AttendanceSidebar from '../components/AttendanceSidebar.vue'
-import { attendanceLogs } from '../data/attendance.json'
+import NoDataImg from '@/assets/no-data.svg'
+import AttendanceSidebar from '@/components/AttendanceSidebar.vue'
+import SelectInput from '@/components/form/SelectInput.vue'
+import { attendanceLogs } from '@/data/attendance.json'
 
 const formatDateString = (date) => (date ? date.toDateString().split(' ').slice(1).join(' ') : '')
 
 const data = ref([])
+const page = ref(1)
+const maxItems = ref(10)
+const filteredData = ref([])
 
 const dateStart = ref()
 const setDateStart = (newDate) => {
@@ -20,12 +24,24 @@ const setDateEnd = (newDate) => {
   console.log('New end date:', dateEnd.value)
 }
 
+watch([page, maxItems], ([newPage, newMaxItems]) => {
+  filteredData.value = data.value.slice(
+    (newPage - 1) * newMaxItems,
+    (newPage - 1) * newMaxItems + newMaxItems
+  )
+})
+
 watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
   if (newDateStart || newDateEnd) {
     data.value = attendanceLogs?.map((log) => ({
       ...log,
       date: new Date(log?.date)
     }))
+
+    filteredData.value = data.value.slice(
+      (page.value - 1) * maxItems.value,
+      (page.value - 1) * maxItems.value + maxItems.value
+    )
   }
 })
 </script>
@@ -42,7 +58,7 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
         </span>
         <span v-else>Date Range</span>
       </h3>
-      <div class="table-view">
+      <div :class="`table-view ${data?.length === 0 || !data ? 'empty' : ''}`">
         <div class="empty-table" v-if="data?.length === 0 || !data">
           <img :src="NoDataImg" />
           <h2>No attendance logs to show</h2>
@@ -62,10 +78,12 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in data" :key="item.id">
+            <tr v-for="item in filteredData" :key="item.id">
               <td>
-                <div class="cell-text">{{ item?.name }}</div>
-                <div class="cell-subtext">{{ item?.id }}</div>
+                <div class="cell">
+                  <div class="cell-text">{{ item?.name }}</div>
+                  <div class="cell-subtext">{{ item?.id }}</div>
+                </div>
               </td>
               <td>{{ item?.date?.toLocaleDateString() }}</td>
               <td>{{ item?.date?.toLocaleTimeString() }}</td>
@@ -80,12 +98,16 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
                 </span>
               </td>
               <td>
-                <div class="cell-text">{{ item?.location || '-' }}</div>
-                <div class="cell-subtext"><em>Notes</em></div>
+                <div class="cell">
+                  <div class="cell-text">{{ item?.location || '-' }}</div>
+                  <div class="cell-subtext"><em>Notes</em></div>
+                </div>
               </td>
               <td>
-                <div class="cell-text">{{ item?.project }}</div>
-                <div class="cell-subtext">NS</div>
+                <div class="cell">
+                  <div class="cell-text">{{ item?.project }}</div>
+                  <div class="cell-subtext">NS</div>
+                </div>
               </td>
               <td>
                 <button class="edit-button"><font-awesome-icon :icon="['far', 'edit']" /></button>
@@ -93,6 +115,38 @@ watch([dateStart, dateEnd], ([newDateStart, newDateEnd]) => {
             </tr>
           </tbody>
         </table>
+        <div class="table-pager" v-if="data?.length > 0">
+          <div class="items-per-page">
+            Items per page {{ maxItems }}
+            <SelectInput
+              :list="Array.from({ length: 10 }, (_, i) => i + 1)"
+              :small="true"
+              :value="maxItems"
+              v-model.number="maxItems"
+            />
+          </div>
+          <div class="pager-nav">
+            <font-awesome-icon :icon="['fas', 'backward']" />
+            <font-awesome-icon :icon="['fas', 'play']" style="transform: scaleX(-1)" />
+            <div class="pager-nav__input">
+              Page
+              <input
+                value="1"
+                type="number"
+                v-model.number="page"
+                :min="1"
+                :max="Math.ceil(data?.length / maxItems)"
+              />
+              of {{ Math.ceil(data?.length / maxItems) }}
+            </div>
+            <font-awesome-icon :icon="['fas', 'play']" />
+            <font-awesome-icon :icon="['fas', 'forward']" />
+          </div>
+          <div class="items-showing">
+            Showing {{ 1 + (page - 1) * maxItems }} -
+            {{ (page - 1) * maxItems + filteredData?.length }} of {{ data?.length }}
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -119,10 +173,13 @@ h3 svg {
 }
 
 .table-view {
-  height: 100%;
   width: 100%;
   border: 1px solid var(--divider-light-1);
   border-radius: 5px;
+}
+
+.table-view.empty {
+  height: 100%;
 }
 
 .empty-table {
@@ -157,6 +214,15 @@ table thead th {
 
 table tbody td {
   padding: 0.4rem 0.8rem;
+  max-width: 100px;
+}
+
+table tbody tr {
+  border-bottom: 1px solid var(--divider-light-2);
+}
+
+table tbody tr:last-of-type {
+  border-bottom: none;
 }
 
 .edit-button {
@@ -168,10 +234,18 @@ table tbody td {
   color: var(--green);
 }
 
+.cell {
+  width: 100%;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .cell-text {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0;
+  width: 100%;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cell-subtext {
@@ -199,5 +273,44 @@ table tbody td {
   border-radius: 5px;
   color: var(--black-soft);
   background: var(--badge-bg);
+}
+
+.table-pager {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--divider-light-1);
+  padding: 1rem;
+}
+
+.items-per-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pager-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pager-nav__input input {
+  margin: 0;
+  border: 1px solid var(--divider-light-1);
+  border-radius: 5px;
+  padding: 0.4rem;
+  width: 60px;
+  max-width: 150px;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+}
+
+.pager-nav svg {
+  font-size: 0.9rem;
+  color: var(--green);
 }
 </style>
