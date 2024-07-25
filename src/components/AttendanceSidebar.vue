@@ -88,7 +88,7 @@ const employeeOptions = [
     </div>
     <div class="sidebar__actions">
       <FilterButton :icon="['fas', 'search']">Search</FilterButton>
-      <FilterButton :icon="['fas', 'download']" bordered disabled>Export</FilterButton>
+      <FilterButton :icon="['fas', 'download']" :bordered="true" disabled>Export</FilterButton>
     </div>
   </div>
 </template>

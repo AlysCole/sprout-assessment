@@ -1,16 +1,9 @@
 <script setup>
-import { defineProps, onMounted, ref } from 'vue'
-
-const props = defineProps(['icon', 'bordered'])
-const { bordered } = props
-const className = ref('filter-button')
-
-onMounted(() => {
-  className.value = bordered ? 'filter-button__bordered' : 'filter-button'
-})
+defineProps(['icon', 'bordered'])
 </script>
+
 <template>
-  <button v-bind="$props" :class="className">
+  <button v-bind="$props" :class="$props.bordered ? 'filter-button__bordered' : 'filter-button'">
     <font-awesome-icon :icon="$props.icon" />
     <slot></slot>
   </button>
