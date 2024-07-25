@@ -28,8 +28,10 @@
   border: 1px solid var(--divider-light-1);
   border-radius: 5px;
   padding: 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   width: 100%;
+  color: var(--text-light-1);
+  font-family: var(--font-family);
 }
 
 .date__input input[type='date']::-webkit-calendar-picker-indicator {

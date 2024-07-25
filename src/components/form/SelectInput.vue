@@ -53,6 +53,8 @@ const { options } = props
   margin: 0;
   width: 100%;
   padding: 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  color: var(--text-light-1);
+  font-family: var(--font-family);
 }
 </style>
