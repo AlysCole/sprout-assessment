@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 import FormLabel from './form/FormLabel.vue'
 import DateInput from './form/DateInput.vue'
 import MultiSelectInput from './form/MultiSelectInput.vue'
@@ -15,15 +15,20 @@ import {
 
 const props = defineProps(['setDateStart', 'setDateEnd', 'hideFilters'])
 const { setDateStart, setDateEnd } = props
+const route = useRoute()
+
+console.log('Current route:', route)
 
 const attendanceLinks = [
   {
     label: 'Attendance Logs',
+    name: 'manage-attendance',
     to: '/',
     icon: ['fas', 'business-time']
   },
   {
     label: 'Exported Files',
+    name: 'exported',
     to: '/exported',
     icon: ['fas', 'download']
   }
@@ -129,13 +134,15 @@ nav > a svg {
 }
 
 nav > a:hover,
-nav > a.active {
+nav > a.active,
+nav > .router-link-active {
   color: var(--black-soft);
   background-color: var(--color-highlight);
 }
 
 nav > a:hover svg,
-nav > a.active svg {
+nav > a.active svg,
+nav > .router-link-active svg {
   color: var(--green);
 }
 </style>
