@@ -13,7 +13,7 @@ import {
   employeeOptions
 } from '../data/attendance.json'
 
-const props = defineProps(['setDateStart', 'setDateEnd'])
+const props = defineProps(['setDateStart', 'setDateEnd', 'hideFilters'])
 const { setDateStart, setDateEnd } = props
 
 const attendanceLinks = [
@@ -46,17 +46,25 @@ const attendanceLinks = [
         </RouterLink>
       </nav>
     </div>
-    <div class="sidebar__filters">
+    <div class="sidebar__filters" v-if="!hideFilters">
       <FormLabel>Date Range</FormLabel>
       <DateInput :on-change="setDateStart">Date From</DateInput>
       <DateInput :on-change="setDateEnd">Date To</DateInput>
       <FormLabel>Filters</FormLabel>
-      <MultiSelectInput :options="companyOptions" :multiple="false">Company</MultiSelectInput>
-      <MultiSelectInput :options="departmentOptions" :multiple="false">Department</MultiSelectInput>
-      <MultiSelectInput :options="locationOptions" :multiple="false">Location</MultiSelectInput>
-      <MultiSelectInput :options="employeeOptions">Employees</MultiSelectInput>
+      <MultiSelectInput :options="companyOptions" :multiple="false" placeholder="Company"
+        >Company</MultiSelectInput
+      >
+      <MultiSelectInput :options="departmentOptions" :multiple="false" placeholder="Department"
+        >Department</MultiSelectInput
+      >
+      <MultiSelectInput :options="[]" :multiple="false" placeholder="Location"
+        >Location</MultiSelectInput
+      >
+      <MultiSelectInput :options="employeeOptions" placeholder="Employee"
+        >Employees</MultiSelectInput
+      >
     </div>
-    <div class="sidebar__actions">
+    <div class="sidebar__actions" v-if="!hideFilters">
       <FilterButton :icon="['fas', 'search']">Search</FilterButton>
       <FilterButton :icon="['fas', 'download']" :bordered="true" disabled>Export</FilterButton>
     </div>
@@ -66,7 +74,7 @@ const attendanceLinks = [
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 25vw;
+  min-width: 25vw;
   max-width: 25vw;
   height: 100%;
   overflow: hidden;
