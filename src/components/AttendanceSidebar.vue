@@ -3,9 +3,15 @@ import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 import FormLabel from './form/FormLabel.vue'
 import DateInput from './form/DateInput.vue'
-import SelectInput from './form/SelectInput.vue'
 import MultiSelectInput from './form/MultiSelectInput.vue'
 import FilterButton from './FilterButton.vue'
+
+import {
+  companyOptions,
+  departmentOptions,
+  locationOptions,
+  employeeOptions
+} from '../data/attendance.json'
 
 const props = defineProps(['setDateStart', 'setDateEnd'])
 const { setDateStart, setDateEnd } = props
@@ -20,42 +26,6 @@ const attendanceLinks = [
     label: 'Exported Files',
     to: '/exported',
     icon: ['fas', 'download']
-  }
-]
-
-const companyOptions = [
-  {
-    value: 'all',
-    label: 'All'
-  },
-  {
-    value: 'sprout',
-    label: 'Sprout Solutions'
-  }
-]
-
-const departmentOptions = [
-  {
-    value: 'all',
-    label: 'All'
-  }
-]
-
-const locationOptions = [
-  {
-    value: 'all',
-    label: 'All'
-  }
-]
-
-const employeeOptions = [
-  {
-    value: 'all',
-    label: 'All'
-  },
-  {
-    value: 'john-smith',
-    label: 'John Smith'
   }
 ]
 </script>

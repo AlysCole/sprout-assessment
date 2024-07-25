@@ -1,0 +1,45 @@
+{
+  "companyOptions": [
+    {
+      "value": "all",
+      "label": "All"
+    },
+    {
+      "value": "sprout",
+      "label": "Sprout Solutions"
+    }
+  ],
+  "departmentOptions": [
+    {
+      "value": "all",
+      "label": "All"
+    }
+  ],
+  "locationOptions": [
+    {
+      "value": "all",
+      "label": "All"
+    }
+  ],
+  "employeeOptions": [
+    {
+      "value": "all",
+      "label": "All"
+    },
+    {
+      "value": "john-smith",
+      "label": "John Smith"
+    }
+  ],
+  "attendanceLogs": [
+    {
+      "name": "Aguas, Ivy",
+      "id": "1234",
+      "date": 1721910739016,
+      "in": true,
+      "logDetails": ["App"],
+      "location": null,
+      "project": "Notification..."
+    }
+  ]
+}
