@@ -15,44 +15,76 @@ const attendanceLinks = [
 </script>
 
 <template>
-  <div class="attendance__sidebar">
-    <h1>Manage Attendance</h1>
-    <p>
-      Attendance management is where you can generate, add, edit, and export the logs of the
-      employees.
-    </p>
-    <nav>
-      <RouterLink v-for="link in attendanceLinks" :key="link.to" :to="link.to">
-        <a class="attendance__link"><font-awesome-icon :icon="link.icon" />{{ link.label }}</a>
-      </RouterLink>
-    </nav>
+  <div class="sidebar">
+    <div class="sidebar__nav">
+      <div class="sidebar__text">
+        <h2>Manage Attendance</h2>
+        <p>
+          Attendance management is where you can generate, add, edit, and export the logs of the
+          employees.
+        </p>
+      </div>
+      <nav>
+        <RouterLink v-for="link in attendanceLinks" :key="link.to" :to="link.to">
+          <font-awesome-icon :icon="link.icon" />{{ link.label }}
+        </RouterLink>
+      </nav>
+    </div>
   </div>
 </template>
 <style scoped>
-.attendance__sidebar {
+.sidebar {
   display: flex;
   flex-direction: column;
-  width: 25%;
-  max-width: 25%;
+  width: 25vw;
+  max-width: 25vw;
   height: 100%;
   overflow: hidden;
+  border-right: 1px solid var(--divider-light-1);
 }
 
-h1 {
-  font-weight: 600;
+.sidebar__nav {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--divider-light-2);
+}
+
+.sidebar__text {
+  padding: 0.4rem;
+}
+
+h2 {
+  font-weight: var(--label-weight);
+  font-size: var(--header-size);
+  margin-bottom: 0.4rem;
 }
 
 nav {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
 }
 
-.attendance__link {
-  font-size: 1.2rem;
-  font-weight: bold;
+nav > a {
+  font-size: var(--label-size);
+  font-weight: var(--label-weight);
+  padding: 0.8rem;
+  border-radius: 5px;
+  color: var(--black-mute);
 }
 
-.attendance__link:hover {
+nav > a svg {
+  width: 2.5rem;
+  text-align: left;
+}
+
+nav > a:hover,
+nav > a.active {
+  color: var(--black-soft);
   background-color: var(--color-highlight);
+}
+
+nav > a:hover svg,
+nav > a.active svg {
+  color: var(--green);
 }
 </style>

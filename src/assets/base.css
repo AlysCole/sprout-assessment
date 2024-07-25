@@ -7,6 +7,7 @@
   --black-soft: #2d4f43;
   --black-mute: #5a756b;
 
+  --green: #17ad49;
   --green-light: #e6ffee;
 
   --divider-light-1: rgba(60, 60, 60, 0.29);
@@ -34,6 +35,9 @@
   --color-highlight: var(--green-light);
 
   --section-gap: 160px;
+  --label-size: 1.05rem;
+  --label-weight: 600;
+  --header-size: 1.4rem;
 }
 
 @media (prefers-color-scheme: dark) {
