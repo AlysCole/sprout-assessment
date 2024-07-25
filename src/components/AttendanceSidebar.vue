@@ -1,10 +1,14 @@
 <script setup>
+import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
 import FormLabel from './form/FormLabel.vue'
 import DateInput from './form/DateInput.vue'
 import SelectInput from './form/SelectInput.vue'
 import MultiSelectInput from './form/MultiSelectInput.vue'
 import FilterButton from './FilterButton.vue'
+
+const props = defineProps(['setDateStart', 'setDateEnd'])
+const { setDateStart, setDateEnd } = props
 
 const attendanceLinks = [
   {
@@ -74,8 +78,8 @@ const employeeOptions = [
     </div>
     <div class="sidebar__filters">
       <FormLabel>Date Range</FormLabel>
-      <DateInput>Date From</DateInput>
-      <DateInput>Date To</DateInput>
+      <DateInput :on-change="setDateStart">Date From</DateInput>
+      <DateInput :on-change="setDateEnd">Date To</DateInput>
       <FormLabel>Filters</FormLabel>
       <MultiSelectInput :options="companyOptions" :multiple="false">Company</MultiSelectInput>
       <MultiSelectInput :options="departmentOptions" :multiple="false">Department</MultiSelectInput>

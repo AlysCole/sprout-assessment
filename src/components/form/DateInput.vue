@@ -1,7 +1,18 @@
+<script setup>
+import { defineProps } from 'vue'
+
+const props = defineProps(['onChange'])
+const { onChange } = props
+
+const handleDateChange = (event) => {
+  console.log('Date changed:', event.target.value)
+  onChange(event.target.value)
+}
+</script>
 <template>
   <div class="date__input">
     <label><slot></slot></label>
-    <input type="date" />
+    <input type="date" @change="handleDateChange" />
   </div>
 </template>
 <style scoped>
